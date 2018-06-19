@@ -17,7 +17,7 @@
  * affiliated with the Apache Software Foundation.
  */
 
-package org.xqdoc.drivers.marklogic;
+package org.xqdoc.drivers;
 
 
 /**
@@ -27,16 +27,7 @@ package org.xqdoc.drivers.marklogic;
  * @author Dmcbeath
  * @version 1.0
  */
-public class MarkLogicDriver {
-
-	// The following are predefined for MarkLogic proprietary extensions
-	public static final String CTS_PREFIX = "cts";
-
-	public static final String CTS_URI = "http://marklogic.com/cts";
-
-	public static final String XDMP_PREFIX = "xdmp";
-
-	public static final String XDMP_URI = "http://marklogic.com/xdmp";
+public class XPathDriver {
 
 	// Standard XPath F&O prefix and uri
 	public static final String XPATH_PREFIX = "fn";

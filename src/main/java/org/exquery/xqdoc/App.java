@@ -3,7 +3,7 @@ package org.exquery.xqdoc;
 import org.xqdoc.conversion.XQDocController;
 import org.xqdoc.conversion.XQDocException;
 import org.xqdoc.conversion.XQDocPayload;
-import org.xqdoc.drivers.marklogic.MarkLogicDriver;
+import org.xqdoc.drivers.XPathDriver;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -22,9 +22,7 @@ public class App
             controller = new XQDocController(
                     XQDocController.JUL2017);
             HashMap uriMap = new HashMap();
-            uriMap.put(MarkLogicDriver.CTS_PREFIX, MarkLogicDriver.CTS_URI);
-            uriMap.put(MarkLogicDriver.XDMP_PREFIX, MarkLogicDriver.XDMP_URI);
-            uriMap.put(MarkLogicDriver.XPATH_PREFIX, MarkLogicDriver.XPATH_URI);
+            uriMap.put(XPathDriver.XPATH_PREFIX, XPathDriver.XPATH_URI);
             controller.setPredefinedFunctionNamespaces(uriMap);
 
             StringBuffer buff = new StringBuffer();
