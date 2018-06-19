@@ -1,0 +1,180 @@
+// $ANTLR : "XQuery.g" -> "XQueryParser.java"$
+
+	
+/**  
+ * Grammar definition for the May 2003 XQuery specification.
+ */
+	package org.xqdoc.xquery.parser.may2003;
+
+	import antlr.debug.misc.*;
+	import java.io.StringReader;
+	import java.io.BufferedReader;
+	import java.io.InputStreamReader;
+	import java.util.ArrayList;
+	import java.util.HashSet;
+	import java.util.List;
+	import java.util.Iterator;
+	import java.util.Stack;
+
+	import org.xqdoc.conversion.XQDocContext;
+
+public interface XQueryParserTokenTypes {
+	int EOF = 1;
+	int NULL_TREE_LOOKAHEAD = 3;
+	int LITERAL_module = 4;
+	int LITERAL_xquery = 5;
+	int LITERAL_version = 6;
+	int STRING_LITERAL = 7;
+	int LITERAL_import = 8;
+	int LITERAL_declare = 9;
+	int LITERAL_xmlspace = 10;
+	int LITERAL_namespace = 11;
+	int LITERAL_default = 12;
+	int LITERAL_collation = 13;
+	int LITERAL_element = 14;
+	int LITERAL_function = 15;
+	int LITERAL_define = 16;
+	int LITERAL_variable = 17;
+	int LITERAL_validation = 18;
+	int LITERAL_lax = 19;
+	int LITERAL_strict = 20;
+	int LITERAL_skip = 21;
+	int LITERAL_schema = 22;
+	int NCNAME = 23;
+	int EQ = 24;
+	int LITERAL_at = 25;
+	int LITERAL_preserve = 26;
+	int LITERAL_strip = 27;
+	int DOLLAR = 28;
+	int LCURLY = 29;
+	int RCURLY = 30;
+	int LITERAL_external = 31;
+	int LPAREN = 32;
+	int RPAREN = 33;
+	int LITERAL_as = 34;
+	int COMMA = 35;
+	int LITERAL_empty = 36;
+	int QUESTION = 37;
+	int STAR = 38;
+	int PLUS = 39;
+	int LITERAL_item = 40;
+	// "document-node" = 41
+	int LITERAL_attribute = 42;
+	// "processing-instruction" = 43
+	int LITERAL_comment = 44;
+	int LITERAL_text = 45;
+	int LITERAL_node = 46;
+	int LITERAL_for = 47;
+	int LITERAL_let = 48;
+	int LITERAL_some = 49;
+	int LITERAL_every = 50;
+	int LITERAL_typeswitch = 51;
+	int LITERAL_if = 52;
+	int LITERAL_try = 53;
+	int LITERAL_catch = 54;
+	int LITERAL_where = 55;
+	int LITERAL_return = 56;
+	int LITERAL_in = 57;
+	int COLON = 58;
+	int LITERAL_stable = 59;
+	int LITERAL_order = 60;
+	int LITERAL_by = 61;
+	int LITERAL_ascending = 62;
+	int LITERAL_descending = 63;
+	int LITERAL_greatest = 64;
+	int LITERAL_least = 65;
+	int LITERAL_satisfies = 66;
+	int LITERAL_case = 67;
+	int LITERAL_then = 68;
+	int LITERAL_else = 69;
+	int LITERAL_or = 70;
+	int LITERAL_and = 71;
+	int LITERAL_instance = 72;
+	int LITERAL_of = 73;
+	int LITERAL_treat = 74;
+	int LITERAL_castable = 75;
+	int LITERAL_cast = 76;
+	int LT = 77;
+	int GT = 78;
+	int LITERAL_eq = 79;
+	int LITERAL_ne = 80;
+	int LITERAL_lt = 81;
+	int LITERAL_le = 82;
+	int LITERAL_gt = 83;
+	int LITERAL_ge = 84;
+	int NEQ = 85;
+	int GTEQ = 86;
+	int LTEQ = 87;
+	int LITERAL_is = 88;
+	int LITERAL_isnot = 89;
+	int LITERAL_to = 90;
+	int MINUS = 91;
+	int LITERAL_div = 92;
+	int LITERAL_idiv = 93;
+	int LITERAL_mod = 94;
+	int LITERAL_union = 95;
+	int UNION = 96;
+	int LITERAL_intersect = 97;
+	int LITERAL_except = 98;
+	int SLASH = 99;
+	int DSLASH = 100;
+	int LITERAL_document = 101;
+	int SELF = 102;
+	int XML_COMMENT = 103;
+	int XML_PI = 104;
+	int LPPAREN = 105;
+	int RPPAREN = 106;
+	int AT = 107;
+	int PARENT = 108;
+	int LITERAL_property = 109;
+	int LITERAL_child = 110;
+	int LITERAL_self = 111;
+	int LITERAL_descendant = 112;
+	// "descendant-or-self" = 113
+	int LITERAL_following = 114;
+	// "following-sibling" = 115
+	int LITERAL_parent = 116;
+	int LITERAL_ancestor = 117;
+	// "ancestor-or-self" = 118
+	int LITERAL_preceding = 119;
+	// "preceding-sibling" = 120
+	int DOUBLE_LITERAL = 121;
+	int DECIMAL_LITERAL = 122;
+	int INTEGER_LITERAL = 123;
+	int LITERAL_nillable = 124;
+	int END_TAG_START = 125;
+	int QUOT = 126;
+	int APOS = 127;
+	int QUOT_ATTRIBUTE_CONTENT = 128;
+	int APOS_ATTRIBUTE_CONTENT = 129;
+	int ELEMENT_CONTENT = 130;
+	int XML_COMMENT_END = 131;
+	int XQDOC_COMMENT = 132;
+	int XML_CDATA = 133;
+	int XML_CDATA_END = 134;
+	int XML_PI_END = 135;
+	int LITERAL_collection = 136;
+	int SEMICOLON = 137;
+	int ANDEQ = 138;
+	int OREQ = 139;
+	int XML_PI_START = 140;
+	int LETTER = 141;
+	int DIGITS = 142;
+	int HEX_DIGITS = 143;
+	int NMSTART = 144;
+	int NMCHAR = 145;
+	int WS = 146;
+	int EXPR_COMMENT = 147;
+	int PRAGMA = 148;
+	int PRAGMA_CONTENT = 149;
+	int PRAGMA_QNAME = 150;
+	int PREDEFINED_ENTITY_REF = 151;
+	int CHAR_REF = 152;
+	int NEXT_TOKEN = 153;
+	int CHAR = 154;
+	int BASECHAR = 155;
+	int IDEOGRAPHIC = 156;
+	int COMBINING_CHAR = 157;
+	int DIGIT = 158;
+	int EXTENDER = 159;
+}
