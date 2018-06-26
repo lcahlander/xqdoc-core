@@ -99,8 +99,8 @@ public class XQDocContext {
 	private XQDocComment xqDocComment = new XQDocComment();
 
 	private String annotationName = null;
-	private LinkedList annotationList = null;
-    protected LinkedList annotationBody;
+	private LinkedList annotationList = new LinkedList();
+    protected LinkedList annotationBody = new LinkedList();
     protected boolean processingAnnotations = false;
 
     /**
