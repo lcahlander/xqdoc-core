@@ -5,17 +5,17 @@ Core module to process XQuery code source to an xqDoc XML file
 
 Run the command: ```mvn clean install assembly:single```
 
-###Dependencies
+### Dependencies
 
 * antlr
 * commons-cli
 
-###Results
+### Results
 
 * target/xqdoc-core-0.8-jar-with-dependencies.jar
 * target/xqdoc-core-0.8.jar
 
-##Command Line Call
+## Command Line Call
 
 ```java -jar xqdoc-core-0.8-jar-with-dependencies.jar -Dprefix=uri -Dprefix=uri -f filepath```
 
