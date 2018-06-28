@@ -3,6 +3,7 @@ package org.exquery.xqdoc;
 import org.apache.commons.cli.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSOutput;
 import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -14,9 +15,7 @@ import org.xqdoc.drivers.XPathDriver;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Enumeration;
@@ -33,7 +32,14 @@ public class App
         DOMImplementationLS domImplementation = (DOMImplementationLS) doc.getImplementation();
         LSSerializer lsSerializer = domImplementation.createLSSerializer();
         lsSerializer.getDomConfig().setParameter("format-pretty-print", Boolean.TRUE);
-        return lsSerializer.writeToString(doc);
+        LSOutput lsOutput =  domImplementation.createLSOutput();
+        lsOutput.setEncoding("UTF-8");
+        Writer stringWriter = new StringWriter();
+        lsOutput.setCharacterStream(stringWriter);
+        lsSerializer.write(doc, lsOutput);
+        String result = stringWriter.toString();
+
+        return result;
     }
 
     public static void main( String[] args ) throws ParseException, IOException, XQDocException, ParserConfigurationException, SAXException {
