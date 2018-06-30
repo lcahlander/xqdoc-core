@@ -35,6 +35,12 @@
       <artifactId>commons-cli</artifactId>
         <version>1.4</version>
     </dependency>
+      <dependency>
+          <groupId>org.xmlunit</groupId>
+          <artifactId>xmlunit-core</artifactId>
+          <version>2.6.0</version>
+          <scope>test</scope>
+      </dependency>
 
   </dependencies>
 
@@ -57,6 +63,9 @@
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.20.1</version>
+            <configuration>
+                <debugForkedProcess>true</debugForkedProcess>
+            </configuration>
         </plugin>
           <plugin>
               <artifactId>maven-assembly-plugin</artifactId>
