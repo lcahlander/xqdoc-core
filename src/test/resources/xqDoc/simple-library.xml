@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xqdoc:xqdoc xmlns:xqdoc="http://www.xqdoc.org/1.0">
+    <xqdoc:control>
+        <xqdoc:date>Mon Jul 02 18:32:56 EDT 2018</xqdoc:date>
+        <xqdoc:version>1.1</xqdoc:version>
+    </xqdoc:control>
+    <xqdoc:module type="library">
+        <xqdoc:uri>http://example.com/s</xqdoc:uri>
+        <xqdoc:name/>
+        <xqdoc:body xml:space="preserve">xquery version "3.1";
+
+module namespace s="http://example.com/s";
+
+declare function s:hello() as xs:string {
+    "hello world"
+};
+</xqdoc:body>
+    </xqdoc:module>
+    <xqdoc:functions>
+        <xqdoc:function>
+            <xqdoc:name>hello</xqdoc:name>
+            <xqdoc:signature>declare function hello() as xs:string</xqdoc:signature>
+            <xqdoc:body xml:space="preserve">declare function s:hello() as xs:string{
+    "hello world"
+};</xqdoc:body>
+        </xqdoc:function>
+    </xqdoc:functions>
+</xqdoc:xqdoc>
+
