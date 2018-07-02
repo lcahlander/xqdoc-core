@@ -63,9 +63,6 @@
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.20.1</version>
-            <configuration>
-                <debugForkedProcess>true</debugForkedProcess>
-            </configuration>
         </plugin>
           <plugin>
               <artifactId>maven-assembly-plugin</artifactId>

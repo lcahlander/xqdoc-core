@@ -4,9 +4,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
+import org.xmlunit.builder.DiffBuilder;
 import org.xmlunit.builder.Input;
 import org.xmlunit.diff.*;
+import org.xmlunit.util.Nodes;
+import org.xmlunit.util.Predicate;
 import org.xqdoc.conversion.XQDocController;
 import org.xqdoc.conversion.XQDocException;
 import org.xqdoc.conversion.XQDocPayload;
@@ -22,6 +27,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -73,7 +79,6 @@ public class AppTest
         ClassLoader classLoader = getClass().getClassLoader();
         String source = classLoader.getResource(input).getFile();
         String target = classLoader.getResource(expected).getFile();
-//        System.out.println(source);
         HashMap uriMap = new HashMap();
         uriMap.put(XPathDriver.XPATH_PREFIX, XPathDriver.XPATH_URI);
         InputStream is = Files.newInputStream(Paths.get(source));
@@ -82,15 +87,7 @@ public class AppTest
         controller.setPredefinedFunctionNamespaces(uriMap);
 
         XQDocPayload payload = controller.process(is, "");
-//        DocumentBuilderFactory dbf =
-//                DocumentBuilderFactory.newInstance();
-//        DocumentBuilder db = dbf.newDocumentBuilder();
-//        InputSource isOut = new InputSource();
         String xqDocXML = payload.getXQDocXML();
-//        System.out.println(xqDocXML);
-//        isOut.setCharacterStream(new StringReader(xqDocXML));
-//
-//        Document doc = db.parse(isOut);
         DifferenceEngine diff = new DOMDifferenceEngine();
         diff.addDifferenceListener(new ComparisonListener() {
             public void comparisonPerformed(Comparison comparison, ComparisonResult outcome) {
@@ -99,6 +96,16 @@ public class AppTest
         });
         Source test = Input.fromString(xqDocXML).build();
         Source control = Input.fromFile(target).build();
-        diff.compare(control, test);
-    }
+        Diff myDiff = DiffBuilder.compare(control).withTest(test)
+                .withNodeFilter(new Predicate<Node>() {
+                    @Override
+                    public boolean test(Node n) {
+                        return !(n instanceof Element &&
+                                "date".equals(Nodes.getQName(n).getLocalPart()));
+                    }
+                })
+                .checkForSimilar()
+                .ignoreWhitespace()
+                .build();
+        assertFalse("XML similar " + myDiff.toString(), myDiff.hasDifferences());    }
 }
