@@ -233,7 +233,7 @@ public class XQDocController {
 
 	/**
 	 * Process the library or main module identified by the Reader.
-	 * 
+	 *
 	 * @param rdr
 	 *            The reader for the library or main module
 	 * @param name
@@ -247,10 +247,25 @@ public class XQDocController {
 	}
 
 	/**
+	 * Process the library or main module identified by the Reader.
+	 *
+	 * @param text
+	 *            The reader for the library or main module
+	 * @param name
+	 *            The 'common name' for the library or main module
+	 * @return Payload containing string of xqDoc XML and moduleURI
+	 * @throws XQDocException
+	 *             Problems while parsing the module
+	 */
+	public XQDocPayload process(String text, String name) throws XQDocException {
+		return parseString(text, name);
+	}
+
+	/**
 	 * Initialize the parser and begin parsing the library or main module. Also,
 	 * extract the source code for the entire module and set this in
 	 * 'moduleBody' so it can be included in the xqDoc XML.
-	 * 
+	 *
 	 * @param is
 	 *            The input stream for the library or main module
 	 * @param rdr
@@ -285,6 +300,63 @@ public class XQDocController {
 
 			// Read the file from the temporary file
 			sb = new StringBuffer();
+			FileReader fr = new FileReader(file);
+			while ((ch = fr.read()) != -1)
+				// This buffer contains the source code for the module
+				sb.append((char) ch);
+			fr.close();
+
+			context.init(moduleBase, name, sb.toString(),
+					predefinedFunctionNamespaces, defaultFunctionNamespace,
+					encodeURIs);
+
+			// Read the file again from the temporary file
+			FileReader frdr = new FileReader(file);
+
+			// Get the Parser via reflection
+			parser = getParser("java.io.Reader", frdr);
+			parser.setContext(context);
+			parser.xpath();
+
+			// Build Response
+			return context.buildResponse();
+		} catch (XQDocRuntimeException xqre) {
+			throw new XQDocException(xqre);
+		} catch (Exception ex) {
+			throw new XQDocException(ex);
+		}
+	}
+
+	/**
+	 * Initialize the parser and begin parsing the library or main module. Also,
+	 * extract the source code for the entire module and set this in
+	 * 'moduleBody' so it can be included in the xqDoc XML.
+	 * 
+	 * @param text
+	 *            The text of the library or main module
+	 * @param name
+	 *            The 'common name' for the library or main module
+	 * @return Payload containing string of xqDoc XML and moduleURI
+	 * @throws XQDocException
+	 *             Problems while parsing the module
+	 */
+	private XQDocPayload parseString(String text, String name)
+			throws XQDocException {
+
+		try {
+			// Create a temporary file
+			File file = File.createTempFile("xqdoc", null);
+			file.deleteOnExit();
+			PrintWriter outputStream = new PrintWriter(new FileWriter(file));
+
+			// Read the input stream or reader and write to the temporary file
+			StringBuffer sb = new StringBuffer(text);
+			outputStream.println(sb.toString());
+			outputStream.close();
+
+			// Read the file from the temporary file
+			sb = new StringBuffer();
+			int ch = 0;
 			FileReader fr = new FileReader(file);
 			while ((ch = fr.read()) != -1)
 				// This buffer contains the source code for the module
