@@ -500,9 +500,17 @@ exprSingle
 	| ( "update" ( "replace" | "value" | "insert" | "delete" | "rename" )) => existUpdateExpr
 	| ( "if" LPAREN ) => ifExpr 
 	| ( "try" LCURLY ) => tryCatchExpr
+	| ( "function" LPAREN ) => inlineFunctionExpr
 	| orExpr
 	;
 	
+inlineFunctionExpr
+:
+	"function"! LPAREN ( paramList )?
+	RPAREN ( returnType )?
+	functionBody
+	;
+
 tryCatchExpr
 {
 	String tmpStr = null;	
@@ -775,9 +783,9 @@ relativePathExpr
 
 stepExpr 
 :
-	( ( "text" | "node" | "element" | "attribute" | "comment" | "processing-instruction" | "document-node"  | "schema-attribute" | "schema-element" | "array-node" | "object-node" ) LPAREN ) => axisStep
+	( ( "text" | "node" | "element" | "attribute" | "comment" | "processing-instruction" | "document-node"  | "schema-attribute" | "schema-element" | "array-node" | "object-node" | "number-node" | "boolean-node" | "null-node" ) LPAREN ) => axisStep
 	|
-	( ( "element" | "attribute" | "text" | "document" | "processing-instruction" | "comment" | "array-node" | "object-node" ) LCURLY ) => filterExpr
+	( ( "element" | "attribute" | "text" | "document" | "processing-instruction" | "comment" | "array-node" | "object-node" | "number-node" | "boolean-node" | "null-node" ) LCURLY ) => filterExpr
 	|
 	( ( "element" | "attribute" | "processing-instruction"  ) qName LCURLY ) => filterExpr
 	|
@@ -846,6 +854,8 @@ nodeTest
 	( "array-node" LPAREN ) => kindTest
 	|
 	( "object-node" LPAREN ) => kindTest
+	|
+	( "number-node" LPAREN ) => kindTest
 	|
 	nameTest
 	;
@@ -1328,6 +1338,10 @@ itemType
 	|
 	( "schema-element" LPAREN ) => kindTest
 	|
+	( "object-node" LPAREN ) => kindTest
+	|
+	( "array-node" LPAREN ) => kindTest
+	|
 	atomicType
 	;
 	
@@ -1341,7 +1355,7 @@ atomicType
 	
 kindTest
 :
-	documentTest | elementTest | attributeTest | schemaElementTest | schemaAttributeTest | piTest | commentTest | textTest | anyKindTest
+	documentTest | elementTest | attributeTest | schemaElementTest | schemaAttributeTest | piTest | commentTest | textTest | objectTest | arrayTest | anyKindTest
 	;
 anyKindTest 
 : 
@@ -1356,6 +1370,16 @@ documentTest
 textTest 
 : 
 	"text" LPAREN RPAREN 
+	;
+
+objectTest 
+: 
+	"object-node" LPAREN RPAREN 
+	;
+
+arrayTest 
+: 
+	"array-node" LPAREN RPAREN 
 	;
 
 commentTest 
