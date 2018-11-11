@@ -12,12 +12,12 @@ Run the command: ```mvn clean install assembly:single```
 
 ### Results
 
-* target/xqdoc-core-0.8-jar-with-dependencies.jar
-* target/xqdoc-core-0.8.jar
+* target/xqdoc-core-0.8.1-jar-with-dependencies.jar
+* target/xqdoc-core-0.8.1.jar
 
 ## Command Line Call
 
-```java -jar xqdoc-core-0.8-jar-with-dependencies.jar -Dprefix=uri -Dprefix=uri -f filepath```
+```java -jar xqdoc-core-0.8.1-jar-with-dependencies.jar -Dprefix=uri -Dprefix=uri -f filepath```
 
 The prefix/uri combination is for the prefixes that are not needed in an import module namespace for the implementation.
 
