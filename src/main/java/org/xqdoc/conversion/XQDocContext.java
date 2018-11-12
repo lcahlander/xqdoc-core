@@ -282,14 +282,42 @@ public class XQDocContext {
 	 * namespace is declared. If a duplicate prefix is found (from the list
 	 * specified by XQDocController), this prefix will override any of the
 	 * 'predefined' values set by XQDocController.
-	 * 
+	 *
 	 * @param prefix
 	 *            The namespace prefix
 	 * @param uri
 	 *            The namespace uri
 	 */
 	public void addPrefixAndURI(String prefix, String uri) {
+		addPrefixAndURI(prefix, uri, false);
+	}
+
+	/**
+	 * Add the namespace prefix and uri to a HashMap. The HashMap will be used
+	 * when processing invoked functions and referenced variables to associate
+	 * the correct uri with the specified prefix in the xqDoc XML for the
+	 * referenced variable or invoked function. This will be called by the
+	 * parser when a module is imported (and namespace prefix is specified) or a
+	 * namespace is declared. If a duplicate prefix is found (from the list
+	 * specified by XQDocController), this prefix will override any of the
+	 * 'predefined' values set by XQDocController.
+	 *
+	 * @param prefix
+	 *            The namespace prefix
+	 * @param uri
+	 *            The namespace uri
+	 * @param isPublished
+	 * 			  A flag for if the namespace is to go into the namespace section of the xqDoc
+	 */
+	public void addPrefixAndURI(String prefix, String uri, boolean isPublished) {
 		uriModuleMap.put(prefix, uri);
+		if (isPublished) {
+			if (encodeURIs) {
+				xqDocXML.buildNamespaceSection(prefix, encodeURI(uri));
+			} else {
+				xqDocXML.buildNamespaceSection(prefix, uri);
+			}
+		}
 	}
 
 	/**

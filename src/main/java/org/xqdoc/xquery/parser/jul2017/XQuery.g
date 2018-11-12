@@ -255,7 +255,7 @@ namespaceDecl
 :
 	"declare" "namespace" prefix=ncnameOrKeyword EQ uri=strippedStringLiteral
 	{ 
-		context.addPrefixAndURI(prefix, uri);
+		context.addPrefixAndURI(prefix, uri, true);
 	}
 	;
 

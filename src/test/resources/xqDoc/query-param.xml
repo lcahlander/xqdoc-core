@@ -151,6 +151,9 @@ function test:hello13($hello) {
 
 </xqdoc:body>
     </xqdoc:module>
+    <xqdoc:namespaces>
+        <xqdoc:namespace prefix="rest" uri="http://exquery.org/ns/restxq"></xqdoc:namespace>
+    </xqdoc:namespaces>
     <xqdoc:functions>
         <xqdoc:function>
             <xqdoc:name>hello</xqdoc:name>

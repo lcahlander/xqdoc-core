@@ -62,6 +62,10 @@ public class XQDocXML {
 
 	private static final String XQDOC_IMPORT_TAG = "import";
 
+	private static final String XQDOC_NAMESPACES_TAG = "namespaces";
+
+	private static final String XQDOC_NAMESPACE_TAG = "namespace";
+
 	private static final String XQDOC_ANNOTATIONS_TAG = "annotations";
 
 	private static final String XQDOC_ANNOTATION_TAG = "annotation";
@@ -93,6 +97,9 @@ public class XQDocXML {
 
 	// Buffer for holding the xml import section
 	private StringBuffer xmlImport = new StringBuffer();
+
+	// Buffer for holding the xml namespace section
+	private StringBuffer xmlNamespace = new StringBuffer();
 
 	// Buffer for holding the xml variable section
 	private StringBuffer xmlVariable = new StringBuffer();
@@ -211,7 +218,7 @@ public class XQDocXML {
 	 * information will include the uri for the import as well as the xqDoc
 	 * comment block associated with the import. This method will be called once
 	 * for each module imported by either a library or main module.
-	 * 
+	 *
 	 * @param uri
 	 *            The uri for the module imported.
 	 * @param comment
@@ -224,6 +231,29 @@ public class XQDocXML {
 		xmlImport.append(buildEndTag(XQDOC_URI_TAG));
 		xmlImport.append(comment.getXML());
 		xmlImport.append(buildEndTag(XQDOC_IMPORT_TAG));
+	}
+
+	/**
+	 * Append information to the import section of the returned xqDoc XML. This
+	 * information will include the uri for the import as well as the xqDoc
+	 * comment block associated with the import. This method will be called once
+	 * for each module imported by either a library or main module.
+	 *
+	 * @param prefix
+	 *            The uri for the module imported.
+	 * @param uri
+	 *            The uri for the module imported.
+	 */
+	public void buildNamespaceSection(String prefix, String uri) {
+		xmlNamespace.append("<");
+		xmlNamespace.append(XQDOC_PREFIX);
+		xmlNamespace.append(XQDOC_NAMESPACE_TAG);
+		xmlNamespace.append(" prefix=\"");
+		xmlNamespace.append(prefix);
+		xmlNamespace.append("\" uri=\"");
+		xmlNamespace.append(uri);
+		xmlNamespace.append("\">");
+		xmlNamespace.append(buildEndTag(XQDOC_NAMESPACE_TAG));
 	}
 
 	/**
@@ -412,6 +442,11 @@ public class XQDocXML {
 			rsp.append(buildBeginTag(XQDOC_IMPORTS_TAG));
 			rsp.append(xmlImport);
 			rsp.append(buildEndTag(XQDOC_IMPORTS_TAG));
+		}
+		if (xmlNamespace.length() > 0) {
+			rsp.append(buildBeginTag(XQDOC_NAMESPACES_TAG));
+			rsp.append(xmlNamespace);
+			rsp.append(buildEndTag(XQDOC_NAMESPACES_TAG));
 		}
 		if (xmlVariable.length() > 0) {
 			rsp.append(buildBeginTag(XQDOC_VARIABLES_TAG));

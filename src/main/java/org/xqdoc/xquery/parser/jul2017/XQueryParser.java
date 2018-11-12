@@ -1296,7 +1296,7 @@ inputState.guessing--;
 		uri=strippedStringLiteral();
 		if ( inputState.guessing==0 ) {
 			
-					context.addPrefixAndURI(prefix, uri);
+					context.addPrefixAndURI(prefix, uri, true);
 				
 		}
 	}
