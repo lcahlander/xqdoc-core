@@ -86,6 +86,12 @@ public class XQDocXML {
 
 	private static final String XQDOC_REFER_VAR_TAG = "ref-variable";
 
+	private static final String XQDOC_RETURN_TAG = "return";
+
+	private static final String XQDOC_TYPE_TAG = "type";
+
+	private static final String XQDOC_OCCURRENCE_ATTRIBUTE = "occurrence";
+
 	// xqDoc XML Namespace
 	private String xqDocNamespace;
 
@@ -300,7 +306,8 @@ public class XQDocXML {
 	 */
 	public void buildFunctionSection(String functionName,
 									 String functionSignature, XQDocComment comment,
-									 String functionBody, HashSet invokedFunctions,
+									 String functionBody, String functionReturnType,
+									 String functionReturnOccurrence, HashSet invokedFunctions,
 									 HashSet referencedVariables, LinkedList annotationList) {
 
 		xmlFunction.append(buildBeginTag(XQDOC_FUNCTION_TAG));
@@ -341,6 +348,23 @@ public class XQDocXML {
 			xmlFunction.append(buildBeginTag(XQDOC_SIGNATURE_TAG));
 			xmlFunction.append(functionSignature);
 			xmlFunction.append(buildEndTag(XQDOC_SIGNATURE_TAG));
+		}
+		if (functionReturnType != null) {
+			xmlFunction.append(buildBeginTag(XQDOC_RETURN_TAG));
+			xmlFunction.append("<");
+			xmlFunction.append(XQDOC_PREFIX);
+			xmlFunction.append(XQDOC_TYPE_TAG);
+			if (functionReturnOccurrence != null) {
+				xmlFunction.append(" ");
+				xmlFunction.append(XQDOC_OCCURRENCE_ATTRIBUTE);
+				xmlFunction.append("='");
+				xmlFunction.append(functionReturnOccurrence);
+				xmlFunction.append("'");
+			}
+			xmlFunction.append(">");
+			xmlFunction.append(functionReturnType);
+			xmlFunction.append(buildEndTag(XQDOC_TYPE_TAG));
+			xmlFunction.append(buildEndTag(XQDOC_RETURN_TAG));
 		}
 		xmlFunction.append(buildInvokedFunctions(invokedFunctions));
 		xmlFunction.append(buildReferencedVariables(referencedVariables));

@@ -95,6 +95,10 @@ public class XQDocContext {
 	// Buffer for holding the current function body
 	private String functionBody;
 
+	// Buffers for holding the current function's return type and occurrence
+	private String functionReturnType;
+	private String functionReturnOccurrence;
+
 	// Buffer for holding the current xqdoc comment
 	private XQDocComment xqDocComment = new XQDocComment();
 
@@ -252,12 +256,13 @@ public class XQDocContext {
 	 */
 	public void buildFunctionSection() {
 		xqDocXML.buildFunctionSection(functionName, functionSignature,
-				xqDocComment, functionBody, invokedFunctions,
+				xqDocComment, functionBody, functionReturnType, functionReturnOccurrence, invokedFunctions,
 				referencedVariables, annotationList);
 		xqDocComment.clear();
 		invokedFunctions = new HashSet();
 		referencedVariables = new HashSet();
 		resetAnnotations();
+		resetFunctionReturnType();
 	}
 
 	/**
@@ -377,6 +382,22 @@ public class XQDocContext {
 		}
 
 		functionName = name;
+	}
+
+	/**
+	 *
+	 */
+	public void resetFunctionReturnType() {
+		functionReturnType = null;
+		functionReturnOccurrence = null;
+	}
+
+	/**
+	 *
+	 */
+	public void setFunctionReturnType(String type, String cardinality) {
+		functionReturnType = type;
+		functionReturnOccurrence = cardinality;
 	}
 
 	/**
